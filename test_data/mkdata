@@ -1,0 +1,11 @@
+set -x
+rm -rf data
+curl -XDELETE localhost:9200/test_index | jq .
+sleep 3
+mkdir -p data
+python gen.py --size 100 --alpha ACGT --n 10 > data/ACGT.txt
+python ../es_loader/line_loader.py test_index ./data/ACGT.txt sp1 ch1
+sleep 3
+curl localhost:9200/test_index/_search | jq .
+curl localhost:9200/test_index/_count | jq .
+

@@ -37,3 +37,9 @@ These show the versions available
 *hook direnv into bash so that pythonpath set for this project*
 This is in .bash_profile
 ```eval "$(direnv hook bash)"```
+
+### test data
+
+```python test_data/gen.py --help```
+
+
