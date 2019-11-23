@@ -1,0 +1,8 @@
+set -x
+curl -XDELETE 'localhost:9200/filter1'
+curl -XPUT 'localhost:9200/filter1?pretty' -H 'Content-Type: application/json' -d @filter1.json
+curl -XPOST 'localhost:9200/filter1/_analyze?pretty' -H 'Content-Type: application/json' -d'
+{
+    "analyzer": "my_analyzer",
+    "text": "My credit card is 123-456-7890"
+}'

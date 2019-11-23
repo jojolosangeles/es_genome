@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "keyword",
+          "char_filter": [
+            "my_char_filter"
+          ]
+        }
+      },
+      "char_filter": {
+        "my_char_filter": {
+          "type": "pattern_replace",
+          "pattern": "def|qrs",
+          "replacement": " "
+        }
+      }
+    }
+  }
+}
