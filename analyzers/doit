@@ -1,0 +1,27 @@
+set -x
+# remove the test index
+read -p 'Remove the test index ' ignore
+curl -XDELETE localhost:9200/cut_test_index
+# create the index, with specific cuts
+read -p 'Create the index' ignore
+curl -XPUT localhost:9200/cut_test_index -d @cut_seq_analyzer.json -H 'Content-Type: application/json' | jq .
+read -p 'Put a doc in the index' ignore
+# put a doc that can be cut, test analyzer cuts at AAA, CCC, GGG, TTT
+curl -XPOST 'localhost:9200/cut_test_index/segment/1?pretty' -H 'Content-Type: application/json' -d'
+{
+"location": 0,
+"species": "human",
+"chromosome": "1",
+"raw_data": "before aaaAAAafter before cccCCCafter before gggGGGafter before tttTTTafter"
+}'
+# search for segment that is there after cut
+read -p 'expect to find' ignore
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:aaa | jq .
+read -p 'expect to find' ignore
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:ccc | jq .
+read -p 'expect to find' ignore
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:ggg | jq .
+read -p 'expect to find' ignore
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:ttt | jq .
+read -p 'expect ZERO hits' ignore
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:bef | jq .
