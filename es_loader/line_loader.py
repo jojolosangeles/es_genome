@@ -41,5 +41,5 @@ with open(file_path, "r") as inFile:
         data = DataSegment(raw_data=line, species=species, chromosome=chromosome, location=location)
         data.save()
         location += len(line)
-        
+
 print(f"loaded {ndocs} documents, {location} values")

@@ -79,20 +79,53 @@ direction, the second for the opposite direction.
 
 *DNA changes very slowly*
 
-### tokenizers for importing genome data into Elasticsearch
-
-Basic test
-```
-curl -XPOST 'localhost:9200/_analyze?pretty' -H 'Content-Type: application/json' -d'
-{
-    "tokenizer": "keyword",
-    "char_filter": [ "html_strip" ],
-    "text": "<p>I&apos;m so <b>sad</b>!</p"
-}'
+### Verifying the concept
 
 ```
+python mkdata.py --data 100x10k --cutsize 5 --ncut 17 --alpha ACGT > doit
+```
 
-Replace specific patterns with space
+This makes a script which does the following:
+
+1. create index with 100 10k sequences
+2. searches for sections of each sequence, verifies correct location found
+3. searches for modified sections of each sequence, verifies correct location found.
+Modified sections will have some number of values inserted, deleted, or changed.
+
+See the scores, the sequences still found even when lots of values change randomly,
+but the scores go down.
+```json
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py
+49 490000
+expected location 490000, actual location 490000, score 46.352097
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py --fuzz 3
+49 490000
+expected location 490000, actual location 490000, score 24.669033
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py --fuzz 30
+49 490000
+expected location 490000, actual location 490000, score 23.033636
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py --fuzz 300
+49 490000
+expected location 490000, actual location 490000, score 9.867613
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py --fuzz 3000
+49 490000
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py --seed 1
+17 170000
+expected location 170000, actual location 170000, score 44.185696
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py --seed 1 --fuzz 30
+17 170000
+expected location 170000, actual location 170000, score 32.789173
+(es_genome) (base) Johs-MBP:test_data jojo$ python search_test.py --seed 1 --fuzz 300
+17 170000
+expected location 170000, actual location 220000, score 2.4133325
+```
+
+### Trying out some sequences
+
+Trying this with larger sequences, say human DNA, then searching
+using other species DNA.
+
+
 
 ### library
 

@@ -1,0 +1,13 @@
+python mkdata.py --data 100x10k --cutsize 5 --ncut 17 --alpha ACGT > doit
+chmod +x doit
+./doit
+python search_test.py --fuzz 3
+python search_test.py --fuzz 30
+python search_test.py --fuzz 300
+python search_test.py --fuzz 3000
+python search_test.py --seed 1
+python search_test.py --seed 1 --fuzz 30
+python search_test.py --seed 1 --fuzz 300
+python search_test.py --seed 787
+python search_test.py --seed 787 --fuzz 30
+python search_test.py --seed 787 --fuzz 300
