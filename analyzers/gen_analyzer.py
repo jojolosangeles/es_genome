@@ -25,8 +25,10 @@ def gen_analyzer(analyzer, template, size, alpha, n, seed):
 
     def generate_cut_sequences(n, size, alpha):
         result = []
-        for i in range(n):
-            result.append(randomString(size, alpha))
+        while len(result) < n:
+            candidate = randomString(size, alpha)
+            if candidate not in result:
+                result.append(candidate)
         param = "|".join(result)
         return param
 

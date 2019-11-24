@@ -19,9 +19,9 @@
     }
   },
   "mappings": {
-    "segment": {
+    "doc": {
       "_source": {
-        "enabled": false
+        "enabled": true
       },
       "properties": {
         "location": { "type": "integer" },

@@ -1,0 +1,23 @@
+rm -rf data
+rm acgt_test.actual
+mkdir -p data
+python gen_data.py --size 10 --n 10 --alpha ACGT > data/acgt.txt
+python ../analyzers/gen_analyzer.py --analyzer cut_seq --size 2 --n 3 --alpha ACGT --template ../analyzers/cut_seq_analyzer.template > data/cut_seq.json
+echo "remove index, this may or may not be there, so not saving output"
+curl -XDELETE localhost:9200/acgt_index | jq . > acgt_test.actual
+echo "create index" > acgt_test.actual
+curl -XPUT localhost:9200/acgt_index -d @data/cut_seq.json -H 'Content-Type: application/json' | jq '.acknowledged' >> acgt_test.actual
+sleep 3
+echo "load data" >> acgt_test.actual
+python ../es_loader/line_loader.py acgt_index ./data/acgt.txt sp1 ch1 >> acgt_test.actual
+sleep 3
+echo "search tests" >> acgt_test.actual
+curl localhost:9200/acgt_index/_search?q=raw_data:ATGC | jq '.hits.total' >> acgt_test.actual
+echo "with location" >> acgt_test.actual
+curl localhost:9200/acgt_index/_search?q=raw_data:GTAGATGCTTAG | jq '.hits.hits[0]._source.location' >> acgt_test.actual
+echo ""
+if cmp -s acgt_test.expected acgt_test.actual; then
+    echo "Test PASSED"
+else
+    echo "Test FAILED"
+fi

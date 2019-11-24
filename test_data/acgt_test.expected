@@ -1,0 +1,8 @@
+create index
+true
+load data
+loaded 10 documents, 100 values
+search tests
+1
+with location
+50
