@@ -1,0 +1,14 @@
+create the index
+true
+add a doc to the index
+"created"
+search for aaa, expect 1 hit
+1
+search for ccc, expect 1 hit
+1
+search for ggg, expect 1 hit
+1
+search for ttt, expect 1 hit
+1
+search for bef, expect 0 hits
+0

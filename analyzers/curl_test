@@ -1,0 +1,35 @@
+rm curl_test.actual
+# remove the test index
+echo "remove index, this may or may not be there, so not saving output"
+curl -XDELETE localhost:9200/cut_test_index | jq '.acknowledged' > curl_test.actual
+# create the index, with specific cuts
+echo "create the index" > curl_test.actual
+curl -XPUT localhost:9200/cut_test_index -d @cut_seq_analyzer.json -H 'Content-Type: application/json' | jq '.acknowledged' >> curl_test.actual
+# put a doc that can be cut, test analyzer cuts at AAA, CCC, GGG, TTT
+echo "add a doc to the index" >> curl_test.actual
+curl -XPOST 'localhost:9200/cut_test_index/segment/1?pretty' -H 'Content-Type: application/json' -d'
+{
+"location": 0,
+"species": "human",
+"chromosome": "1",
+"raw_data": "before aaaAAAafter before cccCCCafter before gggGGGafter before tttTTTafter"
+}' | jq '.result' >> curl_test.actual
+# give doc some time to appear
+sleep 3
+# search for segment that is there after cut
+echo "search for aaa, expect 1 hit" >> curl_test.actual
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:aaa | jq '.hits.total' >> curl_test.actual
+echo "search for ccc, expect 1 hit" >> curl_test.actual
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:ccc | jq '.hits.total' >> curl_test.actual
+echo "search for ggg, expect 1 hit" >> curl_test.actual
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:ggg | jq '.hits.total' >> curl_test.actual
+echo "search for ttt, expect 1 hit" >> curl_test.actual
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:ttt | jq '.hits.total' >> curl_test.actual
+echo "search for bef, expect 0 hits" >> curl_test.actual
+curl localhost:9200/cut_test_index/segment/_search?q=raw_data:bef | jq '.hits.total' >> curl_test.actual
+echo ""
+if cmp -s curl_test.expected curl_test.actual; then
+    echo "Test PASSED"
+else
+    echo "Test FAILED"
+fi

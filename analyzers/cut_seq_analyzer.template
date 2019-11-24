@@ -1,0 +1,34 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "$ANALYZER_NAME": {
+          "tokenizer": "whitespace",
+          "char_filter": [
+            "my_char_filter"
+          ]
+        }
+      },
+      "char_filter": {
+        "my_char_filter": {
+          "type": "pattern_replace",
+          "pattern": "$CUT_SEQUENCES",
+          "replacement": " "
+        }
+      }
+    }
+  },
+  "mappings": {
+    "segment": {
+      "_source": {
+        "enabled": false
+      },
+      "properties": {
+        "location": { "type": "integer" },
+        "species": { "type": "text" },
+        "chromosome": { "type": "text" },
+        "raw_data": { "type": "text", "analyzer": "$ANALYZER_NAME" }
+      }
+    }
+  }
+}
