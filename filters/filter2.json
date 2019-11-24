@@ -3,7 +3,7 @@
     "analysis": {
       "analyzer": {
         "my_analyzer": {
-          "tokenizer": "keyword",
+          "tokenizer": "whitespace",
           "char_filter": [
             "my_char_filter"
           ]

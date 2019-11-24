@@ -125,7 +125,7 @@ expected location 170000, actual location 220000, score 2.4133325
 Trying this with larger sequences, say human DNA, then searching
 using other species DNA.
 
-
+Human data from: ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/ARCHIVE/BUILD.37.3/
 
 ### library
 

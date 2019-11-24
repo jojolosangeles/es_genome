@@ -1,0 +1,59 @@
+rm -rf data
+rm acgt_test.actual
+rm ignore.txt
+mkdir -p data
+python ../analyzers/gen_analyzer.py --analyzer cut_seq --size 5 --n 100 --alpha ACGT --template ../analyzers/cut_seq_analyzer.template > data/cut_seq.json
+echo "remove index, this may or may not be there, so not saving output"
+curl -XDELETE localhost:9200/human_index | jq . > ignore.txt
+echo "create index"
+curl -XPUT localhost:9200/human_index -d @data/cut_seq.json -H 'Content-Type: application/json' | jq '.acknowledged'
+sleep 3
+echo "load human 1"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_1_1m.txt human ch1
+echo "load human 2"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_2_1m.txt human ch2
+echo "load human 3"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_3_1m.txt human ch3
+echo "load human 4"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_4_1m.txt human ch4
+echo "load human 5"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_5_1m.txt human ch5
+echo "load human 6"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_6_1m.txt human ch6
+echo "load human 7"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_7_1m.txt human ch7
+echo "load human 8"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_8_1m.txt human ch8
+echo "load human 9"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_9_1m.txt human ch9
+echo "load human 10"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_10_1m.txt human ch10
+echo "load human 11"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_11_1m.txt human ch11
+echo "load human 12"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_12_1m.txt human ch12
+echo "load human 13"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_13_1m.txt human ch13
+echo "load human 14"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_14_1m.txt human ch14
+echo "load human 15"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_15_1m.txt human ch15
+echo "load human 16"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_16_1m.txt human ch16
+echo "load human 17"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_17_1m.txt human ch17
+echo "load human 18"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_18_1m.txt human ch18
+echo "load human 19"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_19_1m.txt human ch19
+echo "load human 20"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_20_1m.txt human ch20
+echo "load human 21"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_21_1m.txt human ch21
+echo "load human 22"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_22_1m.txt human ch22
+echo "load human X"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_X_1m.txt human chX
+echo "load human Y"
+python ../es_loader/line_loader.py human_index /Users/jojo/genomes/huref/hu_Y_1m.txt human chY
+echo "done"

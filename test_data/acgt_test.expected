@@ -1,6 +1,16 @@
 create index
 true
 load data
+Loaded doc 1 location 0
+Loaded doc 2 location 10
+Loaded doc 3 location 20
+Loaded doc 4 location 30
+Loaded doc 5 location 40
+Loaded doc 6 location 50
+Loaded doc 7 location 60
+Loaded doc 8 location 70
+Loaded doc 9 location 80
+Loaded doc 10 location 90
 loaded 10 documents, 100 values
 search tests
 1

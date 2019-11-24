@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 
 # see https://elasticsearch-dsl.readthedocs.io/en/latest/
 from elasticsearch_dsl import Document, Date, Integer, Keyword, Text
@@ -40,6 +41,8 @@ with open(file_path, "r") as inFile:
         line = line.strip()
         data = DataSegment(raw_data=line, species=species, chromosome=chromosome, location=location)
         data.save()
+        print(f"Loaded doc {ndocs} location {location}")
+        #sleep(1)
         location += len(line)
 
 print(f"loaded {ndocs} documents, {location} values")
